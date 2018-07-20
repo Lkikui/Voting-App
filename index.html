@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Voting App</title>
+</head>
+
+<body>
+    <script src="node_modules/react/umd/react.development.js"></script>
+    <script src="node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const HeadlineComponent = (props) => {
+            return <h1>Vote Your JS Library!</h1>
+        }
+
+        const Votes = (props) => {
+            const voteStyles = {
+                paddingLeft: '6px',
+                height: '28px',
+                lineHeight: '28px',
+                width: '25px',
+                border: '1px solid black',
+                borderRadius: '50%',
+                display: 'inline-block',
+                marginRight: '8px'
+            }
+            return <span style = {voteStyles}>15</span>
+        }
+
+        const PlusButton = (props) => {
+            const { library,  } = props;
+
+            const buttonStyles = {
+                border: '0',
+                color: '#059312',
+                fontWeight: 'bold',
+                fontSize: '22pt',
+                verticalAlign: 'bottom'
+            }
+
+            return <button onClick = { () => { alert(`You voted for ${library}`) } } style = {buttonStyles}>+</button>
+        }
+
+        const TableComponent = (props) => {
+            const tableCells = props.items.map((itemString, trIdx, voteIdx) => {
+                return (
+                    <tr key = {trIdx}>
+                        <td key = {itemString}>
+                            <Votes key = {voteIdx} />
+                            {itemString}
+                            <PlusButton library = {itemString}/>
+                        </td>
+                    </tr>
+                )
+            });
+
+            return (
+                <table>
+                    <tbody>
+                        {tableCells}
+                    </tbody>
+                </table>
+            )
+        }
+
+        ReactDOM.render([HeadlineComponent(), <TableComponent items = {['React', 'Vue', 'Angular', 'Ember']} />], document.getElementById('root'));
+    </script>
+
+</body>
+
+</html>
