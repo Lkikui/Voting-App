@@ -15,62 +15,45 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const HeadlineComponent = (props) => {
-            return <h1>Vote Your JS Library!</h1>
-        }
-
-        const Votes = (props) => {
-            const voteStyles = {
-                paddingLeft: '6px',
-                height: '28px',
-                lineHeight: '28px',
-                width: '25px',
-                border: '1px solid black',
-                borderRadius: '50%',
-                display: 'inline-block',
-                marginRight: '8px'
-            }
-            return <span style = {voteStyles}>15</span>
-        }
-
-        const PlusButton = (props) => {
-            const { library,  } = props;
-
-            const buttonStyles = {
-                border: '0',
-                color: '#059312',
-                fontWeight: 'bold',
-                fontSize: '22pt',
-                verticalAlign: 'bottom'
+        class List extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    votes: [0, 0, 0, 0]
+                }
+                this.handleClick = this.handleClick.bind(this);
             }
 
-            return <button onClick = { () => { alert(`You voted for ${library}`) } } style = {buttonStyles}>+</button>
-        }
+            handleClick(i) {
+                const votes = this.state.votes;
+                votes[i] = votes[i] + 1;
+                
+                this.setState({
+                    votes: votes
+                })
+            }
 
-        const TableComponent = (props) => {
-            const tableCells = props.items.map((itemString, trIdx, voteIdx) => {
+            render() {
                 return (
-                    <tr key = {trIdx}>
-                        <td key = {itemString}>
-                            <Votes key = {voteIdx} />
-                            {itemString}
-                            <PlusButton library = {itemString}/>
-                        </td>
-                    </tr>
+                <div>
+                    <h1>Vote Your JS Library!</h1>
+                    <ul>
+                    {this.props.items.map((item, idx) =>
+                        <li key={item}>
+                        {this.state.votes[idx]}
+                        {item}
+                        <button onClick={() => this.handleClick(idx)}> + </button>
+                        </li>
+                    )}
+                    </ul>
+                </div>
                 )
-            });
+            }
+    }
 
-            return (
-                <table>
-                    <tbody>
-                        {tableCells}
-                    </tbody>
-                </table>
-            )
-        }
+    ReactDOM.render(<List items={['React', 'Vue', 'Angular', 'Ember']} />, document.getElementById('root'));
+</script>
 
-        ReactDOM.render([HeadlineComponent(), <TableComponent items = {['React', 'Vue', 'Angular', 'Ember']} />], document.getElementById('root'));
-    </script>
 
 </body>
 
